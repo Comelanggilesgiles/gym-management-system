@@ -1,0 +1,28 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongodb:27017/coach
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+
+  mongodb:
+    image: mongo:7.0
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
